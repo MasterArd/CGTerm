@@ -6,10 +6,9 @@ The project is intentionally lightweight and serves as a foundation for experime
 
 ## Features
 * **Interactive prompt:** Simple `-->` interface.
-* **Built-in command handling:** Standardized command processing.
-* **Modular package structure:** commands separated into the `gpkg` directory.
-* **Basic terminal control:** Functions for clearing the screen and resetting the cursor.
-* **Settings handling:** Basic file creation and management.
+* **Built-in commands:** common commands to help.
+* **Modular package structure:** Own commands can be easily added. To do this read [How to make custom commands](./custom-commands.md) 
+* **Basic terminal control:** Functions for clearing the screen and listing directories.
 
 ## Requirements
 - Go install via:https://go.dev/dl/
@@ -27,12 +26,15 @@ Building can be done via make or building direct via go
 
 | Command | Description |
 | :--- | :--- |
-| `host` | Prints the system hostname *(not usefull)* |
+| `host` | Prints the system hostname  |
 | `initscreen` | Displays basic screen configuration values |
 | `clear` | Clears the terminal screen |
 | `exit` | Exits the program |
 | `save_settings` | Creates or overwrites a settings file |
-| `whoami` | *(Defined but not implemented)* |
+| `whoami` | Same as `host` |
+| `lsa` | List all files and directories |
+| `lsd` | List all directories but not files |
+| `lsf` | List all files but not directories |
 
 > If an unknown command is entered, the program will return an error message.
 
@@ -41,8 +43,8 @@ Building can be done via make or building direct via go
 /
 ├── main.go          # Entry point and command loop
 ├── Makefile         # Build and run automation
-└── gpkg/
-    └── pkg.go       # Command implementations
+└── commands/
+    └── pkg.go       # standard commands
 
 ```
 

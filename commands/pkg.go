@@ -1,4 +1,4 @@
-package gpkg
+package commands
 
 import (
 	"encoding/json"
@@ -9,7 +9,7 @@ import (
 	"github.com/fatih/color"
 )
 
-func Host() {
+func Host(args []string) {
 	name, err := os.Hostname()
 	if err != nil {
 		fmt.Println("Error retrieving hostname:", err)
@@ -19,7 +19,7 @@ func Host() {
 	fmt.Println("hostname:", name)
 }
 
-func Initscreen() {
+func Initscreen(args []string) {
 	const horizontalCharacter = "|"
 	const vertialCharacter = "-"
 	const screenSizeHorizontal = "40"
@@ -27,16 +27,16 @@ func Initscreen() {
 	fmt.Println(horizontalCharacter, vertialCharacter, screenSizeHorizontal, screenSizeVertical)
 }
 
-func Clear() {
+func Clear(args []string) {
 	fmt.Print("\033[2J", "\033[H]")
 }
 
-func Exit() {
+func Exit(args []string) {
 	os.Exit(0)
 
 }
 
-func Save_settings() {
+func Save_settings(args []string) {
 	var overwriteInput string
 	_, err := os.Stat("gpkg_settings.json")
 	if err == nil {
@@ -53,7 +53,7 @@ func Save_settings() {
 	}
 }
 
-func Read_test() {
+func Read_test(args []string) {
 	// 1. Read the file into a byte slice
 	data, err := os.ReadFile("gpkg_settings.json")
 	if err != nil {
@@ -73,11 +73,13 @@ func Read_test() {
 
 }
 
+/*
 func Help(config map[string]any) {
 	fmt.Println(config)
 }
+*/
 
-func Lsd() {
+func Lsd(args []string) {
 	entries, err := os.ReadDir(".") // . = current dir
 	if err != nil {
 		log.Fatal(err)
@@ -92,7 +94,7 @@ func Lsd() {
 	}
 	fmt.Println(" ")
 }
-func Lsf() {
+func Lsf(args []string) {
 	entries, err := os.ReadDir(".") // . = current dir
 	if err != nil {
 		log.Fatal(err)
@@ -108,7 +110,7 @@ func Lsf() {
 	fmt.Println(" ")
 }
 
-func Lsa() {
+func Lsa(args []string) {
 	entries, err := os.ReadDir(".") // . = current dir
 	if err != nil {
 		log.Fatal(err)
@@ -127,4 +129,18 @@ func Lsa() {
 	fmt.Println(" ")
 }
 
-//move cursor to top left corner: fmt.Print("\033[H")
+// move cursor to top left corner: fmt.Print("\033[H")
+func init() {
+	Register("hello", Hello)
+	Register("host", Host)
+	Register("initscreen", Initscreen)
+	Register("clear", Clear)
+	Register("exit", Exit)
+	Register("save_settings", Save_settings)
+	Register("read_test", Read_test)
+	//Register("help", Help) <-- still needs to be fixed
+	Register("lsd", Lsd)
+	Register("lsf", Lsf)
+	Register("lsa", Lsa)
+
+}

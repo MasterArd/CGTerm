@@ -1,63 +1,37 @@
 package main
 
 import (
-	"CGTerm/gpkg"
+	"CGTerm/commands"
+	"bufio"
 	"fmt"
-	"slices"
+	"os"
+	"strings"
 
 	"github.com/fatih/color"
 )
 
 func main() {
-	commands := []string{"host", "initscreen", "clear", "exit", "whoami", "save_settings", "read_test", "help", "lsd", "lsf", "lsa", ""}
-	//commandsfname = []string{"gpkg.Host()", "gpkg.Initscreen()", "gpkg.Clear()", "gpkg.Exit", "gpkg.Clear()", "gpkg.Save_settings()" }
-	var input string
 	const loop = 1
 
 	for loop < 5 {
 		fmt.Print("--> ")
-		_, err := fmt.Scanln(&input)
-		// if the user press enter Scanln returns error
-		// catch err and restart loop
-		if err != nil {
-			input = ""
-			continue
-		}
-		if slices.Contains(commands, input) {
-			switch input {
-			case "host":
-				gpkg.Host()
-			case "initscreen":
-				gpkg.Initscreen()
-			case "clear":
-				gpkg.Clear()
-			case "exit":
-				gpkg.Exit()
-			case "save_settings":
-				gpkg.Save_settings()
-			case "whoami":
-				gpkg.Host()
-			case "read_test":
-				gpkg.Read_test()
-			case "lsd":
-				gpkg.Lsd()
-			case "lsf":
-				gpkg.Lsf()
-			case "lsa":
-				gpkg.Lsa()
-			//case "help":
-			//gpkg.Help(config map[string]any)
 
-			// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ still needs to be fixed....
+		reader := bufio.NewReader(os.Stdin)
 
-			case "":
-				input = ""
-				fmt.Print("")
-			}
-		} else {
+		input, _ := reader.ReadString('\n')
+		input = strings.TrimSpace(input)
+
+		parts := strings.Split(input, " ")
+		name := parts[0]
+		args := parts[1:]
+		cmd, exists := commands.Registry[name]
+		if !exists {
 			fmt.Print(color.RedString("[-] "), "error in input: command not found: ", input)
 			fmt.Println(" ")
+			continue
 		}
+
+		cmd(args)
 	}
 
 }

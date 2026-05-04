@@ -1,8 +1,0 @@
-{
-    "host":"gpkg.Host",
-    "initscreen":"gpkg.Initscreen",
-    "clear":"gpkg.Clear",
-    "exit":"gpkg.Exit",
-    "whoami":"gpkg.Host",
-    "save_settings":"gpkg.Save_settings"
-}
