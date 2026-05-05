@@ -5,7 +5,7 @@ This guide explains how to create and register custom commands for your Go appli
 1. Requirements
 
 To create a valid custom command, your file must adhere to the following rules:
-- function must pass in args []string after function name
+- function must pass in `args []string` after function name
 
 - Package Name: Must be set to `package commands`.
 
