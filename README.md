@@ -12,7 +12,7 @@ The project is intentionally lightweight and serves as a foundation for experime
 
 ## Requirements
 - Go install via:https://go.dev/dl/
-- 1mb storage
+- 5mb storage
 
 ## Building & Running
 Building can be done via make or building direct via go
