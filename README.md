@@ -1,4 +1,9 @@
-# CGTerm
+<p align="center" >
+    <img style="display: flex; justify-content: center; align-items: center; height: 250px" src="https://masterard.github.io/blue-inft/CGTerm.png" > 
+</p>
+
+
+<h1 align="center"> CGTerm </h1> 
 
 **CGTerm** is a minimal terminal-like interface written in Go. It provides a simple interactive command loop with a small set of built-in commands for system interaction and basic screen control.
 
