@@ -6,32 +6,39 @@ import (
 	"fmt"
 	"os"
 	"strings"
-
 	"github.com/fatih/color"
 )
 
 func main() {
-	const loop = 1
+	reader := bufio.NewReader(os.Stdin)
 
-	for loop < 5 {
-		fmt.Print("--> ")
+	fmt.Println("Welcome to CGTerm! Type 'exit' to quit;")
 
-		reader := bufio.NewReader(os.Stdin)
+	for {
+		fmt.Print("> ")
 
-		input, _ := reader.ReadString('\n')
+		input, err := reader.ReadString('\n')
+		if err != nil {
+			fmt.Println("Error reading input:", err)
+			break
+		}
+		
 		input = strings.TrimSpace(input)
+
+		if input == "" {
+			continue
+		}
 
 		parts := strings.Split(input, " ")
 		name := parts[0]
 		args := parts[1:]
+
 		cmd, exists := commands.Registry[name]
 		if !exists {
-			fmt.Print(color.RedString("[-] "), "error in input: command not found: ", input)
-			fmt.Println(" ")
+			fmt.Printf("%s error: command not found: %s\n", color.RedString("[-]"), name)
 			continue
 		}
 
 		cmd(args)
 	}
-
 }

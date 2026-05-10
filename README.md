@@ -5,7 +5,7 @@
 
 <h1 align="center"> CGTerm </h1> 
 
-**CGTerm** is a minimal terminal-like interface written in Go. It provides a simple interactive command loop with a small set of built-in commands for system interaction and basic screen control.
+**CGTerm** is a minimal terminal-like interface written in Go & C. It provides a simple interactive command loop with a small set of built-in commands for system interaction and basic screen control.
 
 The project is intentionally lightweight and serves as a foundation for experimenting with terminal behavior, command handling, and modular Go packages.
 
@@ -16,16 +16,29 @@ The project is intentionally lightweight and serves as a foundation for experime
 * **Basic terminal control:** Functions for clearing the screen and listing directories.
 
 ## Requirements
-- Go install via:https://go.dev/dl/
-- 5mb storage
+- [Golang](https://go.dev/dl/)
+- 5mb+ storage
 
 ## Building & Running
-Building can be done via make or building direct via go
-1. clone this repository: `https://github.com/MasterArd/CGTerm.git`
-2. Run `Go build .` or `make` followed by `make run` or `./CGTerm`
+Building can be done with make or building directly with go
+
+1. clone CGTerm repository
+```
+git clone https://github.com/MasterArd/CGTerm.git
+cd CGTerm
+```
+
+2. Build using make
+```
+make build
+```
+**with GO**
+```
+go build .
+```
 
 > [!NOTE]
-> **binaries can be found at https://github.com/MasterArd/CGTerm/releases/tag/v1**
+> **binaries can be found at [Releases](https://github.com/MasterArd/CGTerm/releases/)**
 
 ## Available Commands
 
@@ -50,6 +63,7 @@ Building can be done via make or building direct via go
 ├── Makefile         # Build and run automation
 └── commands/
     └── pkg.go       # standard commands
+    └── c/           # standard commands written in C
 
 ```
 
@@ -60,8 +74,10 @@ contribution can be done by forking this repository and making a pull request.
 
 ---
 
-### known issues:
-- `clear` displaying rogue `[`
+### Issues:
+- `clear` displaying rogue `[` (fixed)
+
 
 ## dev notes:
 this is an improvement over `UAC`. *(old archive)*: https://masterard.github.io/blue-inft/News.html
+

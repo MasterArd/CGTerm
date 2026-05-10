@@ -27,9 +27,6 @@ func Initscreen(args []string) {
 	fmt.Println(horizontalCharacter, vertialCharacter, screenSizeHorizontal, screenSizeVertical)
 }
 
-func Clear(args []string) {
-	fmt.Print("\033[2J", "\033[H]")
-}
 
 func Exit(args []string) {
 	os.Exit(0)
@@ -134,7 +131,6 @@ func init() {
 	Register("hello", Hello)
 	Register("host", Host)
 	Register("initscreen", Initscreen)
-	Register("clear", Clear)
 	Register("exit", Exit)
 	Register("save_settings", Save_settings)
 	Register("read_test", Read_test)

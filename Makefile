@@ -2,10 +2,15 @@ all: CGTerm
 
 CGTerm: main.go
 	go build .
-	
 
-run: CGTerm
-	clear && ./CGTerm
+run:
+	go clean -cache
+	go run -a .
+
+build:
+	go clean -cache
+	go build -a -o CGTerm .
 
 clean:
-	rm -f ./CGTerm
+	go clean -cache
+	rm -f CGTerm
