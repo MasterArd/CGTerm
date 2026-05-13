@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
+	"strings"
 
 	"github.com/fatih/color"
 )
@@ -125,6 +127,42 @@ func Lsa(args []string) {
 	}
 	fmt.Println(" ")
 }
+func Cd(args []string) {
+	target := ""
+	if len(args) == 0 || args[0] == "" {
+		home, err := os.UserHomeDir()
+		if err != nil {
+			fmt.Println("Error finding home directory:", err)
+			return
+		}
+		target = home
+	} else {
+		target = args[0]
+		if strings.HasPrefix(target, "~") {
+			home, err := os.UserHomeDir()
+			if err != nil {
+				fmt.Println("Error finding home directory:", err)
+				return
+			}
+			if target == "~" {
+				target = home
+			} else {
+				target = filepath.Join(home, target[1:])
+			}
+		}
+	}
+
+	if err := os.Chdir(target); err != nil {
+		fmt.Println("Error changing directory:", err)
+		return
+	}
+
+	_, err := os.Getwd()
+	if err != nil {
+		fmt.Println("Error retrieving current directory:", err)
+		return
+	}
+}
 
 // move cursor to top left corner: fmt.Print("\033[H")
 func init() {
@@ -132,9 +170,10 @@ func init() {
 	Register("host", Host)
 	Register("initscreen", Initscreen)
 	Register("exit", Exit)
-	Register("save_settings", Save_settings)
-	Register("read_test", Read_test)
+	//Register("save_settings", Save_settings) <<<|
+	//Register("read_test", Read_test)		   <<<|- not usable
 	//Register("help", Help) <-- still needs to be fixed
+	Register("cd", Cd)
 	Register("lsd", Lsd)
 	Register("lsf", Lsf)
 	Register("lsa", Lsa)
