@@ -22,4 +22,4 @@ install:
 	sudo mv cgterm /usr/bin/
 
 compact:
-	upx --best ./cgterm
+	upx --best ./CGTerm
