@@ -7,7 +7,7 @@
 
 **CGTerm** is a minimal terminal-like interface written in Go & C. It provides a interactive command loop with a set of built-in commands for system interaction.
 
-The project is intentionally lightweight and serves as a foundation for experimenting with terminal behavior, command handling, and modular Go packages.
+The project is somewhat lightweight and serves as a foundation for a terminal emulator, command handling, and modular Go & C packages.
 
 ## Features
 * **Interactive prompt:** Simple `>` interface.
