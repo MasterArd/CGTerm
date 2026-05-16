@@ -40,7 +40,7 @@ go build .
 ```
 #### Install
 
-Installation: Manually move the built binary named ``cgterm`` to the bin directory.
+Installation: Manually move the built binary named ``cgterm`` to the `/bin` directory.
 ```
 sudo mv cgterm /usr/bin
 ```
