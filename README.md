@@ -121,6 +121,7 @@ contribution can be done by forking this repository and making a pull request.
 - `clear` displaying rogue `[` (fixed)
 - `sheh` blocking termination from CGTerm. (fixed)
 - `sudo` infite `password` input spam when `sudo` is prompted.
+- text editors like `nano, vi, vim, nvim` currently dont work due to `stdin`
 
 
 ## dev notes:
