@@ -7,23 +7,14 @@ import (
 	"io"
 	"os"
 	"os/exec"
-	"os/signal"
-	"strings"
-	"syscall"
 	"path/filepath"
+	"strings"
 
 	"github.com/fatih/color"
-	"golang.org/x/sys/unix"
 )
 
 func main() {
 	Firstlaunch()
-	fd := int(os.Stdin.Fd())
-
-	unix.Setpgid(0, 0)
-	signal.Ignore(syscall.SIGTTOU)
-	signal.Ignore(syscall.SIGTTIN)
-    signal.Ignore(syscall.SIGINT)
 
 	reader := bufio.NewReader(os.Stdin)
 
@@ -37,7 +28,8 @@ func main() {
 			if err == io.EOF {
 				break
 			}
-			continue
+			fmt.Println(err.Error())
+			break
 		}
 
 		input := strings.TrimSpace(line)
@@ -62,16 +54,13 @@ func main() {
 		c.Stdout = os.Stdout
 		c.Stderr = os.Stderr
 		c.Stdin = os.Stdin
-		c.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
 
 		if err := c.Start(); err != nil {
 			fmt.Fprintf(os.Stderr, "%s error: %s\n", color.RedString("[-]"), err)
 			continue
 		}
 
-		unix.IoctlSetInt(fd, unix.TIOCSPGRP, c.Process.Pid)
 		c.Wait()
-		unix.IoctlSetInt(fd, unix.TIOCSPGRP, unix.Getpgrp())
 	}
 }
 
