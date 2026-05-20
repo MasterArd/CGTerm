@@ -7,8 +7,10 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"os/signal"
 	"path/filepath"
 	"strings"
+	"syscall"
 
 	"github.com/fatih/color"
 )
@@ -17,6 +19,7 @@ func main() {
 	Firstlaunch()
 
 	reader := bufio.NewReader(os.Stdin)
+	signal.Ignore(syscall.SIGTERM, syscall.SIGINT)
 
 	fmt.Println("Welcome to CGTerm! Type 'exit' or press Ctrl+D to quit.")
 
@@ -50,17 +53,20 @@ func main() {
 			continue
 		}
 
-		c := exec.Command(name, args...)
-		c.Stdout = os.Stdout
-		c.Stderr = os.Stderr
-		c.Stdin = os.Stdin
+		cmd := exec.Command(name, args...)
+		cmd.SysProcAttr = &syscall.SysProcAttr{
+			Setsid: true, // new session, so Ctrl+C goes to child's process group
+		}
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		cmd.Stdin = os.Stdin
 
-		if err := c.Start(); err != nil {
+		if err := cmd.Start(); err != nil {
 			fmt.Fprintf(os.Stderr, "%s error: %s\n", color.RedString("[-]"), err)
 			continue
 		}
 
-		c.Wait()
+		cmd.Wait()
 	}
 }
 
