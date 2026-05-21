@@ -1,9 +1,9 @@
 <p align="center" >
-    <img style="display: flex; justify-content: center; align-items: center; height: 250px" src="https://masterard.github.io/blue-inft/CGTerm.png" > 
+    <img style="display: flex; justify-content: center; align-items: center; height: 250px" src="https://masterard.github.io/blue-inft/CGTerm.png" >
 </p>
 
 
-<h1 align="center"> CGTerm </h1> 
+<h1 align="center"> CGTerm </h1>
 
 **CGTerm** is a minimal terminal-like interface written in Go & C. It provides a interactive command loop with a set of built-in commands for system interaction.
 
@@ -12,7 +12,7 @@ The project is somewhat lightweight and serves as a foundation for a terminal em
 ## Features
 * **Interactive prompt:** Simple `>` interface.
 * **Built-in commands:** common commands to help.
-* **Modular package structure:** Own commands can be easily added. To do this read [How to make custom commands](./docs.md) 
+* **Modular package structure:** Own commands can be easily added. To do this read [How to make custom commands](./docs.md)
 * **Basic terminal control:** Functions for clearing the screen and listing directories.
 
 ## Requirements
@@ -22,7 +22,7 @@ The project is somewhat lightweight and serves as a foundation for a terminal em
 ## Building & Installing
 
 ### Build from source
-Building can be done with ``make`` or building directly with ``go``
+Building from source can be done with ``go``
 
 1. clone CGTerm repository
 ```
@@ -30,11 +30,7 @@ git clone https://github.com/MasterArd/CGTerm.git
 cd CGTerm
 ```
 
-2. Build using make
-```
-make build
-```
-or **with Go**
+2. Install
 ```
 go build .
 ```
@@ -52,13 +48,13 @@ git clone https://github.com/MasterArd/CGTerm.git
 cd CGTerm
 ```
 
-2. Use `make install` 
+2. Use `make install`
 ```
 make install
 ```
 
 ### Run CGTerm
-Once installed to the bin directory. Launch ``CGTerm``. 
+Once installed to the bin directory. Launch ``CGTerm``.
 
 
 > **Binaries can be found at [Releases](https://github.com/MasterArd/CGTerm/releases/)**
@@ -72,7 +68,6 @@ Once installed to the bin directory. Launch ``CGTerm``.
 | `initscreen` | Displays basic screen configuration values |
 | `clear` | Clears the terminal screen |
 | `exit` | Exits the program |
-| `save_settings` | Creates or overwrites a settings file |
 | `whoami` | Same as `host` |
 | `lsa` | List all files and directories |
 | `lsd` | List all directories but not files |
@@ -92,7 +87,7 @@ Once installed to the bin directory. Launch ``CGTerm``.
 
 * [fastfetch]
 
-![Install](https://img.shields.io/badge/install-npm-red) 
+![Install](https://img.shields.io/badge/install-npm-red)
 
 * [sheh]
 
@@ -124,7 +119,6 @@ contribution can be done by forking this repository and making a pull request.
 - text editors like `nano, vi, vim, nvim` currently dont work due to `stdin` (fixed)
 
 
+
 ## dev notes:
 this is an improvement over `UAC`. *(old archive)*: https://masterard.github.io/blue-inft/News.html
-
-

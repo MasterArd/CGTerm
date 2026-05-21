@@ -1,6 +1,6 @@
-TARGET = ./build/CGTerm
+TARGET = ./build/cgterm
 
-all: CGTerm
+all: cgterm
 
 CGTerm: main.go
 	go build -o $(TARGET) main.go
@@ -20,8 +20,9 @@ clean:
 
 install:
 	go build -a -o $(TARGET) main.go
-	sudo mv cgterm /usr/bin/
+	sudo mv ./build/cgterm /usr/bin/
 
 # Requires upx: https://upx.github.io/
 compact:
-	upx --best ./build/CGTerm
+	upx --best ./build/cgterm
+

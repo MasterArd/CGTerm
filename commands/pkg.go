@@ -72,12 +72,6 @@ func Read_test(args []string) {
 
 }
 
-/*
-func Help(config map[string]any) {
-	fmt.Println(config)
-}
-*/
-
 func Lsd(args []string) {
 	entries, err := os.ReadDir(".") // . = current dir
 	if err != nil {
@@ -172,7 +166,7 @@ func init() {
 	Register("exit", Exit)
 	//Register("save_settings", Save_settings) <<<|
 	//Register("read_test", Read_test)		   <<<|- not usable
-	//Register("help", Help) <-- still needs to be fixed
+	//Register("help", Help) <-- rewritten to ./CGTerm/c/help.c
 	Register("cd", Cd)
 	Register("lsd", Lsd)
 	Register("lsf", Lsf)

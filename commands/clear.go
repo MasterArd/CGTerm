@@ -2,9 +2,9 @@ package commands
 
 /*
 #cgo CFLAGS: -I${SRCDIR}/c/lib
-#include "printf.h"
+#include "sout.h"
+#include "sout.c"
 #include "c/clear.c"
-#include "c/lib/printf.c"
 
 void clearScreen();
 */

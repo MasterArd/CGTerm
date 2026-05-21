@@ -1,7 +1,7 @@
 package main
 
 import (
-	"CGTerm/commands"
+	"cgterm/commands"
 	"bufio"
 	"fmt"
 	"io"

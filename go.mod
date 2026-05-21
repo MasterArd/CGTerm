@@ -1,4 +1,4 @@
-module CGTerm
+module cgterm
 
 go 1.25.0
 

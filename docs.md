@@ -1,5 +1,5 @@
 ## Install
-To install CGTerm, build CGTerm from source.
+### From Source
 
 1. Clone CGTerm github repository
 ```
@@ -7,20 +7,9 @@ git clone https://github.com/MasterArd/CGTerm.git
 cd CGTerm
 ```
 
-2. Build CGTerm
+2. Install CGTerm to the binary directory
 ```
-make build 
-```
-or use GO build
-
-```
-go build .
-```
-
-3. Manually move the binary file to the bin directory
-
-```
-sudo mv CGTerm /usr/bin
+make install
 ```
 
 CGTerm will finally qualified as your shell and able to interact with your terminal.
@@ -29,8 +18,6 @@ Launch ``CGTerm`` to the terminal.
 CGTerm has built-in commands. Standard and External:
 
 https://github.com/MasterArd/CGTerm/#available-commands
-
-If ``CGTerm`` is installed as done following from step 3. The shell will correctly interact with your terminal and all of the **External Commands** 
 
 ## Making custom commands
 ### Custom Commands Guides
@@ -53,8 +40,8 @@ To ensure your command is valid to CGTerm, your file must adhere to these rules:
 ##### Implementing Examples
 For simple tasks, you can write the logic entirely in Go. Create your new GO file in the commands/ directory:
 ```txt
-CGTerm/
-├── commands/
+CGTerm
+└── commands/
 ```
 
 ```go
@@ -80,6 +67,7 @@ package commands
 
 /*
 #cgo CFLAGS: -I${SRCDIR}/c/lib
+#include "printf.h"
 #include "c/clear.c"
 
 void clearScreen();
@@ -111,6 +99,19 @@ CGTerm
 
 While standard C libraries function correctly without the `#cgo CFLAGS: -I${SRCDIR}/c/lib` directive, it should still be included to prevent potential library resolution issues when implementing custom commands.
 
+#### C program example
+All custom C commands MUST exactly store in the `./commands/c/` directory and exporting all of the function to initialize to CGTerm
+
+```c
+#include <stdio.h>
+
+int goodbye() {
+    puts("Goodbye, World\n");
+}
+
+```
+
 ###  Lastly, running your implements.
 
-By using `make run` or just `go run .` inside of CGTerm root folder, you'll get a resulted `CGTerm` output file if compiled successfully. 
+By using `make run` or just `go run .` inside of CGTerm root folder, you'll get a resulted `cgterm` output binary file if compiled successfully. 
+
