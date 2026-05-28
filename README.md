@@ -1,5 +1,5 @@
 <p align="center" >
-    <img style="display: flex; justify-content: center; align-items: center; height: 250px" src="https://masterard.github.io/blue-inft/CGTerm.png" >
+    <img style="display: flex; justify-content: center; align-items: center; height: 250px" src="https://msad.online/image/CGTerm.png" >
 </p>
 
 
