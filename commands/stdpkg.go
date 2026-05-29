@@ -11,6 +11,15 @@ import (
 	"github.com/fatih/color"
 )
 
+func Version(args []string) {
+	content, err := os.ReadFile("version")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(string(content))
+
+}
+
 func Host(args []string) {
 	name, err := os.Hostname()
 	if err != nil {
@@ -28,7 +37,6 @@ func Initscreen(args []string) {
 	const screenSizeVertical = "60"
 	fmt.Println(horizontalCharacter, vertialCharacter, screenSizeHorizontal, screenSizeVertical)
 }
-
 
 func Exit(args []string) {
 	os.Exit(0)
@@ -171,5 +179,6 @@ func init() {
 	Register("lsd", Lsd)
 	Register("lsf", Lsf)
 	Register("lsa", Lsa)
+	Register("version", Version)
 
 }
