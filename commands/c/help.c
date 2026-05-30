@@ -1,53 +1,42 @@
 #include "lib/sout.h"
-#include "include/version.h"
+#include <stdio.h>
+#include <stdlib.h>
 
-void helpHost();
-void helpInitscreen();
-void helpClear();
-void helpWhoami();
-void helpLsa();
-void helpLsd();
-void helpLsf();
-void helpCd();
+
+char* versionFetch() {
+    FILE *file = fopen("version", "r");
+    if (!file) 
+        return "Unknown";
+
+    char *buffer = malloc(256);
+    char *read = fgets(buffer, 256, file);
+    if (read == NULL) {
+        buffer = NULL;
+    }
+    
+    fclose(file);
+    return buffer;
+}
 
 void printHelp() {        
-    // version & release (typeof #define) forwarded from include/version.h
-    sout("CGTerm cgt, version %s(%s)-release and is GPL-3.0 LICENSE\n", version, release);
-    sout("Shell Standard Commands. Type `help` to see this list\nType `help command` to get detail description about the command\n\n");
-    sout("  host, initscreen, clear,\n");
-    sout("  whoami, lsa, lsd, lsf, cd\n");
-}
+    char *version = versionFetch();
 
-void helpHost() {
-    sout("Print System's host name.\n");
-}
+    sout("CGTerm version %s\n", version);
+    sout("CGT shell, License GPL-3.0.\n\n");
+    
+    sout("Standard Commands:\n");
+    
+    sout("  %s\t\t%s\n", "host",        "Manage host configuration");
+    sout("  %s\t%s\n", "initscreen",  "Initialize terminal screen");
+    sout("  %s\t\t%s\n", "clear",       "Clear the terminal screen");
+    sout("  %s\t%s\n", "whoami",      "Print current user info");
+    sout("  %s\t\t%s\n", "lsa",         "List all files");
+    sout("  %s\t\t%s\n", "lsd",         "List directories only");
+    sout("  %s\t\t%s\n", "lsf",         "List files only");
+    sout("  %s\t\t%s\n", "cd",          "Change directory");
+    sout("  %s\t%s\n", "version",     "Print CGT version");
 
-void helpInitscreen() {
-    sout("Display screen size\n");
-}
 
-void helpClear() {
-    sout("Clear the terminal buffer and reset the cursor position.\n");
-}
-
-void helpWhoami() {
-    sout("Print System's username\n");
-}
-
-void helpLsa() {
-    sout("List all files and directories\n");
-}
-
-void helpLsd() {
-    sout("List all directories\n");
-}
-
-void helpLsf() {
-    sout("List all files\n");
-}
-
-void helpCd() {
-    sout("Change directory\n");
-    sout("Usage: cd <directory>\n");
-    sout("Directory should be an absolute path or a relative path\n");
+    
+    sout("\nRepository at <https://github.com/MasterArd/CGTerm> .\n");
 }
