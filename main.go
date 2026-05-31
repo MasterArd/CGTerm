@@ -1,7 +1,6 @@
 package main
 
 import (
-	"cgterm/commands"
 	"errors"
 	"fmt"
 	"io"
@@ -14,6 +13,8 @@ import (
 
 	"github.com/chzyer/readline"
 	"github.com/fatih/color"
+
+	"cgterm/commands"
 )
 
 func main() {
@@ -23,9 +24,15 @@ func main() {
 
 	Firstlaunch()
 
-	signal.Ignore(syscall.SIGTERM, syscall.SIGINT)
+	signal.Notify(make(chan os.Signal, 1), syscall.SIGINT, syscall.SIGTERM)
 
-	rl, err := readline.New("> ")
+	rl, err := readline.NewEx(&readline.Config{
+		Prompt:          "> ",
+		HistoryFile:     "/tmp/cgterm.history",
+		InterruptPrompt: "^C",
+		EOFPrompt:       "exit",
+	})
+
 	if err != nil {
 		panic(err)
 	}
@@ -35,6 +42,7 @@ func main() {
 
 	for {
 		line, err := rl.Readline()
+
 		if err != nil {
 			if err == readline.ErrInterrupt {
 				continue
@@ -42,13 +50,11 @@ func main() {
 			if err == io.EOF {
 				break
 			}
-
-			fmt.Println(err.Error())
+			fmt.Println(err)
 			break
 		}
 
 		input := strings.TrimSpace(line)
-
 		if input == "" {
 			continue
 		}
@@ -58,30 +64,34 @@ func main() {
 		}
 
 		parts := strings.Fields(input)
+		if len(parts) == 0 {
+			continue
+		}
+
 		name := parts[0]
 		args := parts[1:]
 
-		cmdFunc, exists := commands.Registry[name]
-		if exists {
+		// internal commands first
+		if cmdFunc, ok := commands.Registry[name]; ok {
 			cmdFunc(args)
 			continue
 		}
 
 		cmd := exec.Command(name, args...)
-		cmd.SysProcAttr = &syscall.SysProcAttr{
-			Setsid: true,
-		}
 
+		// IMPORTANT: inherit terminal normally
+		cmd.Stdin = os.Stdin
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
-		cmd.Stdin = os.Stdin
 
-		if err := cmd.Start(); err != nil {
-			fmt.Fprintf(os.Stderr, "[-] error: %s\n", err)
-			continue
+		// no Setpgid, no tcsetpgrp, no "I am the shell now" behavior
+		cmd.SysProcAttr = &syscall.SysProcAttr{
+			Setpgid: false,
 		}
 
-		cmd.Wait()
+		if err := cmd.Run(); err != nil {
+			fmt.Fprintf(os.Stderr, "[-] %s\n", err)
+		}
 	}
 }
 
@@ -91,23 +101,21 @@ func Firstlaunch() {
 		fmt.Println("could not get home directory")
 		return
 	}
+
 	marker := filepath.Join(home, ".CGTerm_init")
 
-	// if file does NOT exist -> first run
 	if _, err := os.Stat(marker); os.IsNotExist(err) {
-
 		fmt.Println(color.CyanString("--FIRST-RUN--"))
 		fmt.Println(color.GreenString("This is probably your first time using CGTerm"))
 		fmt.Println(color.GreenString("Support this project on github: https://github.com/MasterArd/CGTerm/"))
 		fmt.Println(color.GreenString("This message will only show once"))
 
-		// create marker file
-		file, err := os.Create(marker)
+		f, err := os.Create(marker)
 		if err != nil {
 			fmt.Println("could not create marker file:", err)
 			return
 		}
-		file.Close()
+		f.Close()
 	}
 }
 
@@ -121,6 +129,7 @@ func ensureVersionFile() error {
 		return err
 	}
 	defer file.Close()
+
 	_, err = file.WriteString("1.3.1")
 	return err
 }
