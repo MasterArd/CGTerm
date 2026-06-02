@@ -39,7 +39,7 @@ func Lsd(args []string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Print("--> ")
+	fmt.Print("> ")
 	for _, entry := range entries {
 		if entry.IsDir() {
 
@@ -54,7 +54,7 @@ func Lsf(args []string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Print("--> ")
+	fmt.Print("> ")
 	for _, entry := range entries {
 		if !entry.IsDir() {
 
@@ -70,7 +70,7 @@ func Lsa(args []string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Print("--> ")
+	fmt.Print("> ")
 	for _, entry := range entries {
 		if !entry.IsDir() {
 

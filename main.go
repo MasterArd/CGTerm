@@ -27,7 +27,6 @@ func main() {
 	signal.Notify(make(chan os.Signal, 1), syscall.SIGINT, syscall.SIGTERM)
 
 	rl, err := readline.NewEx(&readline.Config{
-		Prompt:          "> ",
 		HistoryFile:     "/tmp/cgterm.history",
 		InterruptPrompt: "^C",
 		EOFPrompt:       "exit",
@@ -41,6 +40,18 @@ func main() {
 	fmt.Println("Welcome to CGTerm! Type 'exit' or press Ctrl+D to quit.")
 
 	for {
+		cwd, err := os.Getwd()
+		if err != nil {
+			cwd = "?"
+		}
+
+		// optional: shorten home directory
+		home, _ := os.UserHomeDir()
+		if strings.HasPrefix(cwd, home) {
+			cwd = "[" + color.CyanString("~") + strings.TrimPrefix(cwd, home) + "]"
+		}
+
+		rl.SetPrompt(fmt.Sprintf("%s $> ", cwd))
 		line, err := rl.Readline()
 
 		if err != nil {
@@ -71,7 +82,7 @@ func main() {
 		name := parts[0]
 		args := parts[1:]
 
-		// internal commands first
+		// internal command first
 		if cmdFunc, ok := commands.Registry[name]; ok {
 			cmdFunc(args)
 			continue
@@ -79,18 +90,16 @@ func main() {
 
 		cmd := exec.Command(name, args...)
 
-		// IMPORTANT: inherit terminal normally
 		cmd.Stdin = os.Stdin
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 
-		// no Setpgid, no tcsetpgrp, no "I am the shell now" behavior
 		cmd.SysProcAttr = &syscall.SysProcAttr{
 			Setpgid: false,
 		}
 
 		if err := cmd.Run(); err != nil {
-			fmt.Fprintf(os.Stderr, "[-] %s\n", err)
+			fmt.Fprintf(os.Stderr, color.RedString("[-] ")+"%s\n", err)
 		}
 	}
 }
@@ -98,7 +107,7 @@ func main() {
 func Firstlaunch() {
 	home, err := os.UserHomeDir()
 	if err != nil {
-		fmt.Println("could not get home directory")
+		fmt.Println(color.RedString("could not get home directory"))
 		return
 	}
 
