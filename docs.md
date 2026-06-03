@@ -80,7 +80,7 @@ func clearCMD(args []string) {
 }
 
 func init() {
-    // registering command
+    // registering a command
     Register("clear", clearCMD)
 
 }
@@ -110,6 +110,17 @@ int goodbye() {
 }
 
 ```
+---
+### Adding custom startup content
+Custom startup content can be added by including your function in `startup.go`. In `main.go` it will be automatically executed.
+```txt
+CGTerm
+└──customConfig
+   └──startup.go
+```
+for now it's empty, but you can customize it how you want!
+
+---
 
 ###  Lastly, running your implements.
 

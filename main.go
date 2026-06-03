@@ -15,13 +15,14 @@ import (
 	"github.com/fatih/color"
 
 	"cgterm/commands"
+	customconfig "cgterm/customConfig"
 )
 
 func main() {
 	if err := ensureVersionFile(); err != nil {
 		fmt.Printf("Error: %v\n", err)
 	}
-
+	customconfig.Startup()
 	Firstlaunch()
 
 	signal.Notify(make(chan os.Signal, 1), syscall.SIGINT, syscall.SIGTERM)

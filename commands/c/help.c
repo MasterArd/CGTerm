@@ -43,7 +43,7 @@ void printHelp() {
     sout("  %s\t\t%s\n", "lsf",         "List files only");
     sout("  %s\t\t%s\n", "cd",          "Change directory");
     sout("  %s\t%s\n", "version",     "Print CGT version");
-
+    sout("  %s\t%s\n", "standard shell commands");
 
     
     sout("\nRepository at <https://github.com/MasterArd/CGTerm>\n");
