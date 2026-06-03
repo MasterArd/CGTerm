@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
 #include <stdarg.h>
 
 #if defined(_WIN32)
@@ -29,81 +28,90 @@ SOFTWARE.
     #include <unistd.h>
 #endif
 
-void _putchar(char character) {
+
+void write_chunk(const char *buf, int length) {
+    if (length <= 0) return;
 #if defined(_WIN32)
     DWORD written;
-    WriteFile(GetStdHandle(STD_OUTPUT_HANDLE), &character, 1, &written, NULL);
+    WriteFile(GetStdHandle(STD_OUTPUT_HANDLE), buf, length, &written, NULL);
 #else
-    int total_written = write(1, &character, 1);
+    write(1, buf, length);
 #endif
 }
 
 void sout(const char *format, ...) {
+    static char buffer[1024];
+    int pos = 0;
     va_list arguments;
     va_start(arguments, format);
 
     for (const char *cursor = format; *cursor != '\0'; cursor++) {
-        
+        if (pos >= 1023) {
+            write_chunk(buffer, pos);
+            pos = 0;
+        }
+
         if (*cursor == '%' && *(cursor + 1) != '\0') {
             cursor++;
-            
             switch (*cursor) {
                 case 's': {
-                    char *text = va_arg(arguments, char *);
-                    if (text == NULL) {
-                        text = "(null)";
-                    }
+                    const char *text = va_arg(arguments, const char *);
+                    if (text == NULL) text = "(null)";
                     while (*text != '\0') {
-                        _putchar(*text++);
+                        if (pos >= 1023) {
+                            write_chunk(buffer, pos);
+                            pos = 0;
+                        }
+                        buffer[pos++] = *text++;
                     }
                     break;
                 }
-                
                 case 'd': {
                     int number = va_arg(arguments, int);
-                    char digits_buffer[12];
-                    int position = 0;
-                    
+                    char digits[12];
+                    int p = 0;
                     if (number == 0) {
-                        _putchar('0');
-                        break;
-                    }
-                    if (number < 0) {
-                        _putchar('-');
-                        number = -number; 
-                    }
-                    
-                    while (number > 0) {
-                        digits_buffer[position++] = (number % 10) + '0';
-                        number = number/10;
-                    }
-                    
-                    while (position > 0) {
-                        _putchar(digits_buffer[--position]);
+                        buffer[pos++] = '0';
+                    } else {
+                        if (number < 0) {
+                            buffer[pos++] = '-';
+                            number = -number;
+                        }
+                        while (number > 0) {
+                            digits[p++] = (number % 10) + '0';
+                            number /= 10;
+                        }
+                        while (p > 0) {
+                            if (pos >= 1023) {
+                                write_chunk(buffer, pos);
+                                pos = 0;
+                            }
+                            buffer[pos++] = digits[--p];
+                        }
                     }
                     break;
                 }
-                
                 case 'c': {
-                    char single_character = (char)va_arg(arguments, int);
-                    _putchar(single_character);
+                    buffer[pos++] = (char)va_arg(arguments, int);
                     break;
                 }
-                
                 case '%': {
-                    _putchar('%');
+                    buffer[pos++] = '%';
                     break;
                 }
-                
                 default: {
-                    _putchar('%');
-                    _putchar(*cursor);
+                    buffer[pos++] = '%';
+                    buffer[pos++] = *cursor;
                     break;
                 }
             }
         } else {
-            _putchar(*cursor);
+            buffer[pos++] = *cursor;
         }
+    }
+
+    if (pos > 0) {
+        write_chunk(buffer, pos);
     }
 
     va_end(arguments);

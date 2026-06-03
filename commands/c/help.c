@@ -1,6 +1,8 @@
-#include "lib/sout.h"
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "lib/sout.h"
+#include "include/version.h"
 
 
 char* versionFetch() {
@@ -19,10 +21,16 @@ char* versionFetch() {
 }
 
 void printHelp() {        
+    // from ./CGTerm/version
     char *version = versionFetch();
-
-    sout("CGTerm version %s\n", version);
-    sout("CGT shell, License GPL-3.0.\n\n");
+    
+    /* 
+       ./CGTerm/commands/c/include/version.h
+        #define release 
+    
+    */
+    sout("CGTerm version %s (%s)-release\n", version, release);
+    sout("CGT shell, License GPL-3.0\n\n");
     
     sout("Standard Commands:\n");
     
@@ -38,5 +46,5 @@ void printHelp() {
 
 
     
-    sout("\nRepository at <https://github.com/MasterArd/CGTerm> .\n");
+    sout("\nRepository at <https://github.com/MasterArd/CGTerm>\n");
 }
