@@ -67,40 +67,45 @@ func main() {
 		}
 
 		input := strings.TrimSpace(line)
-		if input == "" {
-			continue
-		}
+		commandsList := strings.Split(input, "&&")
 
-		if input == "exit" {
-			break
-		}
+		for _, cmdStr := range commandsList {
+			cmdStr = strings.TrimSpace(cmdStr)
 
-		parts := strings.Fields(input)
-		if len(parts) == 0 {
-			continue
-		}
+			if cmdStr == "" {
+				continue
+			}
 
-		name := parts[0]
-		args := parts[1:]
+			parts := strings.Fields(cmdStr)
+			if len(parts) == 0 {
+				continue
+			}
 
-		// internal command first
-		if cmdFunc, ok := commands.Registry[name]; ok {
-			cmdFunc(args)
-			continue
-		}
+			name := parts[0]
+			args := parts[1:]
 
-		cmd := exec.Command(name, args...)
+			// internal commands
+			if cmdFunc, ok := commands.Registry[name]; ok {
+				cmdFunc(args)
+				continue
+			}
 
-		cmd.Stdin = os.Stdin
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
+			cmd := exec.Command(name, args...)
 
-		cmd.SysProcAttr = &syscall.SysProcAttr{
-			Setpgid: false,
-		}
+			cmd.Stdin = os.Stdin
+			cmd.Stdout = os.Stdout
+			cmd.Stderr = os.Stderr
 
-		if err := cmd.Run(); err != nil {
-			fmt.Fprintf(os.Stderr, color.RedString("[-] ")+"%s\n", err)
+			cmd.SysProcAttr = &syscall.SysProcAttr{
+				Setpgid: false,
+			}
+
+			if err := cmd.Run(); err != nil {
+				fmt.Fprintf(os.Stderr, color.RedString("[-] ")+"%s\n", err)
+
+				// stop execution if one command fails
+				break
+			}
 		}
 	}
 }

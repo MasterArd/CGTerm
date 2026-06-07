@@ -1,5 +1,10 @@
 package commands
 
+/*
+#cgo CFLAGS: -I${SRCDIR}/c/
+#
+*/
+
 import (
 	"fmt"
 	"log"
@@ -9,6 +14,7 @@ import (
 
 	"github.com/fatih/color"
 )
+
 
 func Version(args []string) {
 	content, err := os.ReadFile("version")
@@ -83,6 +89,28 @@ func Lsa(args []string) {
 	}
 	fmt.Println(" ")
 }
+func Lse(args []string) {
+    entries, err := os.ReadDir(".") // . = current dir
+    if err != nil {
+        log.Fatal(err)
+    }
+    
+    fmt.Print("> ")
+    for _, entry := range entries {
+        if entry.IsDir() {
+            continue
+        }
+        info, err := entry.Info()
+        if err != nil {
+            continue
+        }
+        if info.Mode()&0111 != 0 {
+            color.New(color.FgHiRed).Fprint(os.Stdout, entry.Name())
+            fmt.Print("  ")
+        }
+    }
+    fmt.Println(" ")
+}
 func Cd(args []string) {
 	target := ""
 	if len(args) == 0 || args[0] == "" {
@@ -128,5 +156,6 @@ func init() {
 	Register("lsd", Lsd)
 	Register("lsf", Lsf)
 	Register("lsa", Lsa)
+	Register("lse", Lse)
 	Register("version", Version)
 }

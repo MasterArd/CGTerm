@@ -71,8 +71,10 @@ Once installed to the bin directory. Launch ``cgterm``.
 | `lsa` | List all files and directories |
 | `lsd` | List all directories but not files |
 | `lsf` | List all files but not directories |
+| `lse` | List all executable files and nothing else |
 | `help`| Show help |
 | `cd` | Change directories |
+
 
 ### External commands
 | Command | Details |
@@ -98,8 +100,11 @@ Once installed to the bin directory. Launch ``cgterm``.
 /
 ├── main.go          # Entry point and command loop
 ├── Makefile         # Build and run automation
+├── customConfig/    # Directory for custom (startup) configs
+    └──startup.go    # [optional] custom startup file
 └── commands/
-    └── pkg.go       # standard commands
+    ├── stdpkg.go    # standard commands
+    ├── registry.go  # collecting commands.
     └── c/           # standard commands written in C
 
 ```
