@@ -122,7 +122,9 @@ for now it's empty, but you can customize it how you want!
 
 ---
 
+### CGTerm's shell scripts
+CGTerm now has shell scripts just make a file with the file extension `.cg` and write your script, to run just type `cg file.cg`, *disclaimer: this is still in early development so it's not great.*
+
 ###  Lastly, running your implements.
 
 By using `make run` or just `go run .` inside of CGTerm root folder, you'll get a resulted `cgterm` output binary file if compiled successfully. 
-

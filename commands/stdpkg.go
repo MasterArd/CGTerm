@@ -17,12 +17,21 @@ import (
 
 
 func Version(args []string) {
-	content, err := os.ReadFile("version")
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(string(content))
+    home, err := os.UserHomeDir()
+    var content []byte
+    content, err = os.ReadFile(filepath.Join(home, ".CGTerm_init"))
+    if err != nil {
+        log.Fatal("Could not read file:", err)
+    }
+    fmt.Println(string(content))
+}
 
+func Print(args []string) {
+	if args[0] == "$SHELL" {
+		fmt.Println("CGTerm")
+	} else {
+		fmt.Println(args[0])
+	}
 }
 
 func Host(args []string) {
@@ -49,11 +58,10 @@ func Lsd(args []string) {
 	for _, entry := range entries {
 		if entry.IsDir() {
 
-			color.New(color.FgHiGreen).Fprint(os.Stdout, entry.Name())
+			color.New(color.FgHiGreen).Fprintln(os.Stdout, entry.Name())
 			fmt.Print("  ")
 		}
 	}
-	fmt.Println(" ")
 }
 func Lsf(args []string) {
 	entries, err := os.ReadDir(".") // . = current dir
@@ -64,11 +72,10 @@ func Lsf(args []string) {
 	for _, entry := range entries {
 		if !entry.IsDir() {
 
-			color.New(color.FgHiBlue).Fprint(os.Stdout, entry.Name())
+			color.New(color.FgHiBlue).Fprintln(os.Stdout, entry.Name())
 			fmt.Print("  ")
 		}
 	}
-	fmt.Println(" ")
 }
 
 func Lsa(args []string) {
@@ -80,14 +87,13 @@ func Lsa(args []string) {
 	for _, entry := range entries {
 		if !entry.IsDir() {
 
-			color.New(color.FgHiBlue).Fprint(os.Stdout, entry.Name())
+			color.New(color.FgHiBlue).Fprintln(os.Stdout, entry.Name())
 			fmt.Print("  ")
 		} else if entry.IsDir() {
-			color.New(color.FgHiGreen).Fprint(os.Stdout, entry.Name())
+			color.New(color.FgHiGreen).Fprintln(os.Stdout, entry.Name())
 			fmt.Print("  ")
 		}
 	}
-	fmt.Println(" ")
 }
 func Lse(args []string) {
     entries, err := os.ReadDir(".") // . = current dir
@@ -105,11 +111,10 @@ func Lse(args []string) {
             continue
         }
         if info.Mode()&0111 != 0 {
-            color.New(color.FgHiRed).Fprint(os.Stdout, entry.Name())
+            color.New(color.FgHiRed).Fprintln(os.Stdout, entry.Name())
             fmt.Print("  ")
         }
     }
-    fmt.Println(" ")
 }
 func Cd(args []string) {
 	target := ""
@@ -158,4 +163,5 @@ func init() {
 	Register("lsa", Lsa)
 	Register("lse", Lse)
 	Register("version", Version)
+	Register("print", Print)
 }

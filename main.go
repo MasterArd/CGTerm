@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -19,9 +18,6 @@ import (
 )
 
 func main() {
-	if err := ensureVersionFile(); err != nil {
-		fmt.Printf("Error: %v\n", err)
-	}
 	customconfig.Startup()
 	Firstlaunch()
 
@@ -46,7 +42,7 @@ func main() {
 			cwd = "?"
 		}
 
-		// optional: shorten home directory
+		
 		home, _ := os.UserHomeDir()
 		if strings.HasPrefix(cwd, home) {
 			cwd = "[" + color.CyanString("~") + strings.TrimPrefix(cwd, home) + "]"
@@ -89,6 +85,7 @@ func main() {
 				cmdFunc(args)
 				continue
 			}
+			
 
 			cmd := exec.Command(name, args...)
 
@@ -103,7 +100,6 @@ func main() {
 			if err := cmd.Run(); err != nil {
 				fmt.Fprintf(os.Stderr, color.RedString("[-] ")+"%s\n", err)
 
-				// stop execution if one command fails
 				break
 			}
 		}
@@ -119,32 +115,26 @@ func Firstlaunch() {
 
 	marker := filepath.Join(home, ".CGTerm_init")
 
+	
 	if _, err := os.Stat(marker); os.IsNotExist(err) {
 		fmt.Println(color.CyanString("--FIRST-RUN--"))
 		fmt.Println(color.GreenString("This is probably your first time using CGTerm"))
 		fmt.Println(color.GreenString("Support this project on github: https://github.com/MasterArd/CGTerm/"))
 		fmt.Println(color.GreenString("This message will only show once"))
 
+		
 		f, err := os.Create(marker)
 		if err != nil {
 			fmt.Println("could not create marker file:", err)
 			return
 		}
-		f.Close()
-	}
-}
+		defer f.Close()
 
-func ensureVersionFile() error {
-	file, err := os.OpenFile("version", os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0666)
-
-	if err != nil {
-		if errors.Is(err, os.ErrExist) {
-			return nil
+		
+		_, err = f.WriteString("1.3.3")
+		if err != nil {
+			fmt.Println("could not write version to marker file:", err)
+			return
 		}
-		return err
 	}
-	defer file.Close()
-
-	_, err = file.WriteString("1.3.1")
-	return err
 }

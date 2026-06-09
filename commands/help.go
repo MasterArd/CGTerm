@@ -8,15 +8,16 @@ package commands
 
 void printHelp();
 */
-import "C"
-
+import (
+	"C"
+    "fmt"
+)
 
 func helpPrinter(args []string) {
-    C.printHelp()
+    fmt.Println("Help is currently being bug fixed,") // this will be removed once the bug is fixed
+	//C.printHelp()
 }
-
 
 func init() {
-    Register("help", helpPrinter);
+	Register("help", helpPrinter)
 }
-

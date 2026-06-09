@@ -74,6 +74,7 @@ Once installed to the bin directory. Launch ``cgterm``.
 | `lse` | List all executable files and nothing else |
 | `help`| Show help |
 | `cd` | Change directories |
+| `cg` | execute CGTerm shell scripts |
 
 
 ### External commands
@@ -101,11 +102,12 @@ Once installed to the bin directory. Launch ``cgterm``.
 ├── main.go          # Entry point and command loop
 ├── Makefile         # Build and run automation
 ├── customConfig/    # Directory for custom (startup) configs
-    └──startup.go    # [optional] custom startup file
+    └──startup.go    # [optional] Custom startup file
 └── commands/
-    ├── stdpkg.go    # standard commands
-    ├── registry.go  # collecting commands.
-    └── c/           # standard commands written in C
+    ├── stdpkg.go    # Standard commands
+    ├── registry.go  # Collecting commands.
+    ├── cg.go        # Needed for CGTerm shell execution
+    └── c/           # Standard commands written in C
 
 ```
 
@@ -117,6 +119,7 @@ contribution can be done by forking this repository and making a pull request.
 ---
 
 ### Issues:
+- `help` not working and giving large errors
 - `clear` displaying rogue `[` (fixed)
 - `sheh` blocking termination from CGTerm. (fixed)
 - `sudo` infite `password` input spam when `sudo` is prompted. (fixed)
