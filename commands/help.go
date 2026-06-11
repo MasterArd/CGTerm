@@ -1,23 +1,23 @@
 package commands
 
-/*
-#cgo CFLAGS: -I${SRCDIR}/c/lib
-#include "sout.h"
-#include "c/help.c"
-
-
-void printHelp();
-*/
 import (
-	"C"
     "fmt"
 )
 
-func helpPrinter(args []string) {
-    fmt.Println("Help is currently being bug fixed,") // this will be removed once the bug is fixed
-	//C.printHelp()
+func Help(args []string) {
+	fmt.Printf("  %s\t\t%s\n", "host", "Manage host configuration")
+	fmt.Printf("  %s\t\t%s\n", "clear", "Clear the terminal screen")
+	fmt.Printf("  %s\t%s\n", "whoami", "Print current user info")
+	fmt.Printf("  %s\t\t%s\n", "lsa", "List all files")
+	fmt.Printf("  %s\t\t%s\n", "lsd", "List directories only")
+	fmt.Printf("  %s\t\t%s\n", "lsf", "List files only")
+	fmt.Printf("  %s\t\t%s\n", "lse", "List executables only")
+	fmt.Printf("  %s\t\t%s\n", "cd", "Change directory")
+	fmt.Printf("  %s\t\t%s\n", "cg", "execute CGTerm shell scripts")
+	fmt.Printf("  %s\t%s\n", "version", "Print CGT version")
+	fmt.Printf("  %s\t%s\n", "standard shell commands", "")
 }
 
 func init() {
-	Register("help", helpPrinter)
+	Register("help", Help)
 }
