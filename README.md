@@ -73,8 +73,10 @@ Once installed to the bin directory. Launch ``cgterm``.
 | `lsf` | List all files but not directories |
 | `lse` | List all executable files and nothing else |
 | `help`| Show help |
+| `batt` | Show battery status in a live view |
 | `cd` | Change directories |
 | `cg` | execute CGTerm shell scripts |
+| `cgtermff` | show fetch of CGTerm |
 
 
 ### External commands

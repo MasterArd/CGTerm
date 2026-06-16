@@ -1,7 +1,7 @@
 package commands
 
 import (
-    "fmt"
+	"fmt"
 )
 
 func Help(args []string) {
@@ -14,7 +14,7 @@ func Help(args []string) {
 	fmt.Printf("  %s\t\t%s\n", "lse", "List executables only")
 	fmt.Printf("  %s\t\t%s\n", "cd", "Change directory")
 	fmt.Printf("  %s\t\t%s\n", "cg", "execute CGTerm shell scripts")
-	fmt.Printf("  %s\t%s\n", "version", "Print CGT version")
+	fmt.Printf("  %s\t\t%s\n", "batt", "Show battery status in a live view")
 	fmt.Printf("  %s\t%s\n", "standard shell commands", "")
 }
 
