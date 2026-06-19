@@ -15,7 +15,6 @@ func Help(args []string) {
 	fmt.Printf("  %s\t\t%s\n", "cd", "Change directory")
 	fmt.Printf("  %s\t\t%s\n", "cg", "execute CGTerm shell scripts")
 	fmt.Printf("  %s\t\t%s\n", "batt", "Show battery status in a live view")
-	fmt.Printf("  %s\t%s\n", "standard shell commands", "")
 }
 
 func init() {

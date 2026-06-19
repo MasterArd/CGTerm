@@ -213,6 +213,7 @@ void runBatt(void) {
             if (read_input_char(&c)) {
                 if (c == 'q' || c == 'Q') {
                     running = 0;
+                    reset_terminal();
                     break;
                 }
             }
